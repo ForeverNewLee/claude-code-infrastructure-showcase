@@ -14,8 +14,7 @@ TDD（测试驱动开发）工作流：
 ## 安装
 
 ```bash
-pip install pytest pytest-cov pytest-asyncio
-# 或
+# 使用 uv（推荐）
 uv add --dev pytest pytest-cov pytest-asyncio
 ```
 
@@ -99,7 +98,7 @@ class TestCreateUser:
 ### Step 3: 验证
 
 ```bash
-pytest tests/test_user_service.py -v
+uv run pytest tests/test_user_service.py -v
 ```
 
 ---
@@ -220,14 +219,14 @@ def test_file_processor(tmp_path):
 
 ```bash
 # 生成覆盖率报告
-pytest --cov=src --cov-report=term-missing
+uv run pytest --cov=src --cov-report=term-missing
 
 # 生成 HTML 报告
-pytest --cov=src --cov-report=html
+uv run pytest --cov=src --cov-report=html
 open htmlcov/index.html
 
 # 设置最低覆盖率门槛（CI 中使用）
-pytest --cov=src --cov-fail-under=80
+uv run pytest --cov=src --cov-fail-under=80
 ```
 
 ---

@@ -95,7 +95,7 @@ class Test<ErrorCases>:
 
 3. **提示运行验证**：
    ```bash
-   pytest tests/test_<feature>.py -v
+   uv run pytest tests/test_<feature>.py -v
    ```
 
 ---
@@ -190,7 +190,9 @@ class EmailValidator:
 
 现在运行测试验证：
 ```bash
-pytest tests/test_email_validator.py -v
+uv run pytest tests/test_email_validator.py -v
+```
 然后运行完整质量链：
-ruff format . && ruff check . && mypy . && pytest
+```bash
+uv run ruff format . && uv run ruff check . --fix && uv run mypy . && uv run pytest
 ```

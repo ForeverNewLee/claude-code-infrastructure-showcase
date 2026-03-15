@@ -5,7 +5,7 @@
 # - Logs affected files for end-of-session mypy + pytest suggestion
 #
 # Install: Add to .claude/settings.json PostToolUse hooks
-# Requires: ruff (pip install ruff)
+# Requires: uv (https://docs.astral.sh/uv/)
 
 set -euo pipefail
 
@@ -49,16 +49,16 @@ while [[ "$dir" != "/" && "$dir" != "$project_root" ]]; do
     dir="$(dirname "$dir")"
 done
 
-# ── Check ruff is available ────────────────────────────────────────────────────
-if ! command -v ruff &>/dev/null; then
-    # Try uv run ruff as fallback
-    if ! command -v uv &>/dev/null; then
-        echo "⚠️  ruff not found. Install with: pip install ruff" >&2
-        exit 0  # Don't block, just warn
-    fi
+# ── Check ruff availability via uv (preferred) or global fallback ─────────────
+if command -v uv &>/dev/null; then
+    # ✅ Always prefer uv run: uses project venv's ruff, not a random global one
     RUFF="uv run ruff"
-else
+elif command -v ruff &>/dev/null; then
+    # ⚠️  Fallback: global ruff (version may differ from pyproject.toml)
     RUFF="ruff"
+else
+    echo "⚠️  uv not found. Install uv: curl -LsSf https://astral.sh/uv/install.sh | sh" >&2
+    exit 0  # Don't block, just warn
 fi
 
 # ── Run ruff format ────────────────────────────────────────────────────────────
@@ -95,8 +95,8 @@ if [[ "$is_test" == "false" ]]; then
     fi
 
     echo ""
-    echo "💡 Next: run 'mypy .' and 'pytest' when done"
-    echo "   Or: ruff format . && ruff check . && mypy . && pytest"
+    echo "💡 质量馈 全部运行："
+    echo "   uv run ruff format . && uv run ruff check . --fix && uv run mypy . && uv run pytest"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 fi
 

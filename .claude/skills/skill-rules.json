@@ -78,6 +78,55 @@
                 ]
             }
         },
+        "uv-environment": {
+            "type": "guardrail",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "UV Python 环境管理：项目初始化、dev/prod 模式、uv.lock 策略、依赖安装，确保始终使用 uv run",
+            "promptTriggers": {
+                "keywords": [
+                    "uv sync",
+                    "uv run",
+                    "uv add",
+                    "uv init",
+                    "uv lock",
+                    "pyproject.toml",
+                    "pip install",
+                    "virtualenv",
+                    "venv",
+                    ".venv",
+                    "requirements.txt",
+                    "dev mode",
+                    "prod mode",
+                    "dev dependencies",
+                    "环境配置",
+                    "初始化环境",
+                    "安装依赖",
+                    "uv.lock"
+                ],
+                "intentPatterns": [
+                    "(setup|init|initialize|configure).*?environment",
+                    "(install|sync|add|remove).*?depend",
+                    "(create|init).*?python.*?project",
+                    "uv.*?(sync|run|add|init|install)",
+                    "(dev|prod|production|development).*?mode",
+                    "pip.*?install",
+                    "how to.*?(install|setup|configure).*?python"
+                ]
+            },
+            "fileTriggers": {
+                "pathPatterns": [
+                    "**/pyproject.toml",
+                    "**/uv.lock",
+                    "**/.python-version",
+                    "**/requirements*.txt"
+                ],
+                "pathExclusions": [
+                    "**/.venv/**",
+                    "**/node_modules/**"
+                ]
+            }
+        },
         "git-workflow": {
             "type": "domain",
             "enforcement": "suggest",

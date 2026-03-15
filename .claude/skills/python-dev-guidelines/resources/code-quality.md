@@ -10,8 +10,7 @@ ruff 同时负责：
 ### 安装
 
 ```bash
-pip install ruff mypy
-# 或
+# 使用 uv（推荐）
 uv add --dev ruff mypy
 ```
 
@@ -56,19 +55,19 @@ indent-style = "space"
 
 ```bash
 # 检查所有文件（不修改）
-ruff check .
+uv run ruff check .
 
 # 检查 + 自动修复
-ruff check . --fix
+uv run ruff check . --fix
 
 # 格式化所有文件
-ruff format .
+uv run ruff format .
 
 # 只检查单个文件
-ruff check src/myapp/service.py
+uv run ruff check src/myapp/service.py
 
 # 查看某条规则的说明
-ruff rule B006
+uv run ruff rule B006
 ```
 
 ---
@@ -218,13 +217,21 @@ def process(model: HeavyModel) -> None: ...
 
 ```yaml
 # .github/workflows/quality.yml
+- name: Install uv
+  uses: astral-sh/setup-uv@v5
+  with:
+    enable-cache: true
+
+- name: Install dependencies
+  run: uv sync
+
 - name: Lint & Format Check
   run: |
-    ruff format --check .
-    ruff check .
+    uv run ruff format --check .
+    uv run ruff check .
 
 - name: Type Check
-  run: mypy .
+  run: uv run mypy .
 ```
 
 ---
